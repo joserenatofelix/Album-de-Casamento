@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block visitor_controls %}
+  <audio id="bg-music" controls loop>
+    <source src="{{ url_for('static', filename='music/Kenny G - The Moment.mp3') }}" type="audio/mpeg">
+    Seu navegador não suporta áudio.
+  </audio>
+
+  <button id="music-play-btn" class="btn btn-primary" style="display:none;">
+    <i class="fas fa-music"></i> Tocar música
+  </button>
+{% endblock %}
+
+{% block content %}
+<div class="album-wrapper text-center fade-in">
+
+  <div class="photo-frame mx-auto" id="photo-frame">
+    <img id="main-photo"
+         src="{% if photos %}{{ url_for('static', filename='photos/' + photos[0]) }}{% else %}{{ url_for('static', filename='images/placeholder.jpg') }}{% endif %}"
+         alt="Foto de Renato e Cleonice" />
+  </div>
+
+  <div class="controls mt-4">
+    <button id="prev" class="btn btn-secondary">
+      <i class="fas fa-chevron-left"></i> Anterior
+    </button>
+    <button id="next" class="btn btn-secondary">
+      Próxima <i class="fas fa-chevron-right"></i>
+    </button>
+    <button id="play" class="btn btn-primary">
+      <i class="fas fa-play"></i> Slideshow
+    </button>
+  </div>
+
+  {% if photos %}
+  <div id="thumbs" class="d-flex justify-content-center flex-wrap mt-4">
+    {% for p in photos %}
+      <img class="thumb" src="{{ url_for('static', filename='photos/thumbs/' + p) }}" data-file="{{ p }}" alt="Miniatura" />
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info mt-4">
+    <i class="fas fa-info-circle me-2"></i>
+    Nenhuma foto encontrada. Por favor, adicione fotos na pasta photos/original e execute process_images.py.
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

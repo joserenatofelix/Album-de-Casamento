@@ -1,0 +1,538 @@
+/* styles.css - Versão Modernizada */
+:root {
+    --color-primary: #d4af37;
+    --color-secondary: #f8f5f0;
+    --color-accent: #c0b283;
+    --color-dark: #5a4b41;
+    --color-light: #fffaf0;
+    --color-rose: #ffb7c5;
+    --color-rose-dark: #e91e63;
+    --font-heading: 'Playfair Display', 'Cormorant Garamond', serif;
+    --font-body: 'Cormorant Garamond', 'Georgia', serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-body);
+    background: linear-gradient(to bottom, #faf7f5, #fffaf0);
+    color: var(--color-dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Header e Navegação */
+.navbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+    position: relative;
+    z-index: 1000;
+}
+
+.navbar-brand {
+    font-family: var(--font-heading);
+    font-size: 2rem !important;
+    font-weight: 700;
+    color: var(--color-primary) !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+    letter-spacing: 1px;
+}
+
+/* Títulos personalizados */
+.wedding-header {
+    text-align: center;
+    padding: 60px 0;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(192, 178, 131, 0.2) 100%);
+    margin-bottom: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+.wedding-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-primary));
+}
+
+.main-title {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    letter-spacing: 2px;
+}
+
+.couple-name {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    font-weight: 500;
+    color: var(--color-primary);
+    font-style: italic;
+    position: relative;
+    display: inline-block;
+}
+
+.couple-name::after {
+    content: "♥";
+    color: var(--color-rose-dark);
+    margin-left: 15px;
+    animation: pulse 2s infinite;
+}
+
+.couple-name::before {
+    content: "♥";
+    color: var(--color-rose-dark);
+    margin-right: 15px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+/* Moldura da foto principal */
+.photo-frame {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: var(--color-secondary);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    border-radius: 12px;
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    position: relative;
+    transition: transform 0.3s ease;
+    z-index: 10;
+}
+
+.photo-frame:hover {
+    transform: translateY(-5px);
+}
+
+.photo-frame::before {
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 2px solid var(--color-primary);
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+.photo-frame img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+    object-fit: contain;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+}
+
+/* Controles */
+.controls {
+    margin: 25px 0;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 10;
+}
+
+.btn {
+    font-family: var(--font-body);
+    font-weight: 500;
+    padding: 12px 25px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, var(--color-secondary), #e8e2d6);
+    color: var(--color-dark);
+    border: 1px solid var(--color-accent);
+}
+
+.btn-secondary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-primary), #b8941f);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #b8941f, var(--color-primary));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Miniaturas */
+#thumbs {
+    margin: 25px 0;
+    padding: 15px;
+    background: rgba(248, 245, 240, 0.7);
+    border-radius: 12px;
+    position: relative;
+    z-index: 10;
+}
+
+.thumb {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+    border: 3px solid white;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+    margin: 8px;
+}
+
+.thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border-color: var(--color-primary);
+}
+
+/* Footer personalizado */
+.wedding-footer {
+    text-align: center;
+    padding: 30px 0;
+    margin-top: 40px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(192, 178, 131, 0.2) 100%);
+    color: var(--color-dark);
+    font-style: italic;
+    position: relative;
+    z-index: 10;
+}
+
+/* Animações suaves */
+.fade-in {
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsividade */
+@media (max-width: 992px) {
+    .main-title {
+        font-size: 2.8rem;
+    }
+    
+    .couple-name {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-title {
+        font-size: 2.2rem;
+    }
+    
+    .couple-name {
+        font-size: 1.5rem;
+    }
+    
+    .photo-frame {
+        padding: 15px;
+    }
+    
+    .btn {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .thumb {
+        width: 85px;
+        height: 70px;
+        margin: 5px;
+    }
+}
+
+@media (max-width: 576px) {
+    .main-title {
+        font-size: 1.8rem;
+    }
+    
+    .couple-name {
+        font-size: 1.3rem;
+    }
+    
+    .wedding-header {
+        padding: 30px 0;
+    }
+    
+    .controls {
+        gap: 10px;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .thumb {
+        width: 70px;
+        height: 60px;
+    }
+    
+    .navbar-brand {
+        font-size: 1.5rem !important;
+    }
+}
+
+/* Efeito de flores decorativas */
+.floral-decoration {
+    position: absolute;
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.floral-1 {
+    top: 20px;
+    left: 5%;
+    font-size: 3rem;
+    transform: rotate(-15deg);
+}
+
+.floral-2 {
+    bottom: 30px;
+    right: 5%;
+    font-size: 3rem;
+    transform: rotate(15deg);
+}
+
+/* Contador de visitantes no lado esquerdo */
+.visitor-counter {
+    font-size: 1.2em;
+    color: var(--color-dark);
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 8px 15px;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Controles no topo direito */
+.visitor-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.visitor-controls audio {
+    width: 200px;
+    height: 40px;
+    border-radius: 20px;
+}
+
+/* Layout da navbar */
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* Efeitos modernos adicionais */
+.modern-shadow {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.hover-lift {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* Gradiente moderno para elementos importantes */
+.modern-gradient {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+}
+
+/* Melhorias no cabeçalho */
+.wedding-header {
+    position: relative;
+    overflow: hidden;
+}
+
+.wedding-header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+}
+
+/* Efeito de brilho sutil em elementos dourados */
+.gold-glow {
+    position: relative;
+}
+
+.gold-glow::after {
+    content: "";
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: inherit;
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.2), transparent 70%);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gold-glow:hover::after {
+    opacity: 1;
+}
+
+/* Efeito de rosas caindo */
+.falling-roses-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1001;
+    overflow: hidden;
+}
+
+.rose {
+    position: absolute;
+    font-size: 24px;
+    color: var(--color-rose);
+    opacity: 0.7;
+    animation-name: falling-rose;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    z-index: 1001;
+}
+
+@keyframes falling-rose {
+    0% {
+        transform: translateY(-10%) rotate(0deg);
+        opacity: 0.7;
+    }
+    80% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Controle de intensidade das rosas */
+.rose-control {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px;
+    border-radius: 50px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.rose-control-btn {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.rose-control-btn:hover {
+    transform: scale(1.1);
+    background: #b8941f;
+}
+
+/* Melhorias de transição para elementos interativos */
+.btn, .thumb, .photo-frame {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Efeito de foco suave para elementos de formulário */
+input:focus, textarea:focus, select:focus, button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.3);
+}
+
+
+
+/* Estilo para miniatura ativa */
+.active-thumb {
+    border-color: var(--color-primary) !important;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.5) !important;
+}
+
+.photo-out {
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+.photo-in {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Melhorias de responsividade para mobile */
+@media (max-width: 768px) {
+    .controls {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn {
+        width: 200px;
+        justify-content: center;
+    }
+}
