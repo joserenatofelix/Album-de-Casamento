@@ -14,35 +14,37 @@ os.makedirs(OUT_DIR, exist_ok=True)
 os.makedirs(THUMB_DIR, exist_ok=True)
 
 def process_image(in_path, out_path, thumb_path):
+    # Converte o nome do arquivo para minúsculas e muda a extensão para .webp
+    base_name = os.path.splitext(os.path.basename(in_path).lower())[0]
+    out_path = os.path.join(OUT_DIR, f"{base_name}.webp")
+    thumb_path = os.path.join(THUMB_DIR, f"{base_name}.webp")
+
     with Image.open(in_path) as im:
-        im = im.convert("RGBA")
+        # Garante que a imagem está em modo RGB antes de processar
+        im = im.convert("RGB")
+
         # redimensiona se maior que MAX_DIM
         w, h = im.size
         if max(w, h) > MAX_DIM:
             scale = MAX_DIM / max(w, h)
             im = im.resize((int(w*scale), int(h*scale)), Image.LANCZOS)
 
-        # cria borda usando ImageOps.expand
+        # Adiciona borda e salva a foto final em WebP
         framed = ImageOps.expand(im, border=BORDER, fill=BORDER_COLOR)
-
-        # salvar foto final
-        framed = framed.convert("RGB")
-        framed.save(out_path, quality=95)
+        framed.save(out_path, 'webp', quality=90)
 
         # criar thumbnail
         thumb = im.copy()
         thumb.thumbnail(THUMB_SIZE, Image.LANCZOS)
-        thumb = thumb.convert("RGB")
+        # Adiciona uma borda menor para o thumbnail
         thumb = ImageOps.expand(thumb, border=10, fill=BORDER_COLOR)
-        thumb.save(thumb_path, quality=85)
+        thumb.save(thumb_path, 'webp', quality=80)
 
 if __name__ == "__main__":
     files = [f for f in os.listdir(INPUT_DIR) if f.lower().endswith(('.jpg','.jpeg','.png'))]
     files.sort()
     for f in files:
-        in_p = os.path.join(INPUT_DIR, f)
-        out_p = os.path.join(OUT_DIR, f)
-        thumb_p = os.path.join(THUMB_DIR, f)
+        in_path = os.path.join(INPUT_DIR, f)
         print("Processando:", f)
-        process_image(in_p, out_p, thumb_p)
+        process_image(in_path, None, None) # Passamos None, pois os paths são gerados dentro da função
     print("Pronto. Fotos processadas em", OUT_DIR, "e thumbs em", THUMB_DIR)

@@ -1,35 +1,73 @@
 import os
 from flask import Flask, render_template
 from datetime import datetime
+import threading
+import socket
 
 app = Flask(__name__)
 
 # Configurações
 app.config['PHOTO_DIR'] = 'static/photos'
 app.config['THUMB_DIR'] = 'static/photos/thumbs'
+app.config['VISITOR_COUNT_FILE'] = 'visitor_count.txt'
+
+# --- Contador de Visitantes Persistente e Thread-Safe ---
+_visitor_lock = threading.Lock()
+
+def get_visitor_count():
+    """Lê o número de visitantes de um arquivo."""
+    with _visitor_lock:
+        try:
+            with open(app.config['VISITOR_COUNT_FILE'], 'r') as f:
+                return int(f.read())
+        except (IOError, ValueError):
+            return 0
+
+def increment_visitor_count():
+    """Incrementa e salva o número de visitantes."""
+    with _visitor_lock:
+        count = get_visitor_count() + 1
+        with open(app.config['VISITOR_COUNT_FILE'], 'w') as f:
+            f.write(str(count))
+        return count
 
 def get_photos():
     """Retorna lista de fotos processadas"""
-    if not os.path.exists(app.config['PHOTO_DIR']):
+    photo_dir = app.config['PHOTO_DIR']
+    if not os.path.exists(photo_dir):
         return []
     
-    photos = [f for f in os.listdir(app.config['PHOTO_DIR']) 
-              if f.lower().endswith(('.jpg', '.jpeg', '.png')) and not f.startswith('.')]
+    photos = [f for f in os.listdir(photo_dir)
+              if f.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')) and os.path.isfile(os.path.join(photo_dir, f))]
     return sorted(photos)
 
 @app.context_processor
 def inject_now():
     """Injeta a data atual em todos os templates"""
-    return {'now': datetime.now()}
-
-visitor_count = 0
+    return {'now': datetime.utcnow()}
 
 @app.route("/")
 def album():
-    global visitor_count
-    visitor_count += 1
+    visitor_count = increment_visitor_count()
     photos = get_photos()
     return render_template("album.html", photos=photos, visitor_count=visitor_count)
 
 if __name__ == "__main__":
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    # Detect whether the system supports IPv6. If so, bind to '::' so
+    # that connections to localhost resolving to ::1 will work.
+    try:
+        has_ipv6 = socket.has_ipv6
+    except Exception:
+        has_ipv6 = False
+
+    if has_ipv6:
+        bind_host = '::'
+    else:
+        bind_host = '0.0.0.0'
+
+    print(f"Starting Flask on host={bind_host} port=5000\n")
+    print("Open these URLs in your browser:")
+    print("  http://127.0.0.1:5000/")
+    print("  http://localhost:5000/  (if your system resolves localhost to 127.0.0.1 or ::1)")
+
+    app.run(debug=True, host=bind_host, port=5000)
