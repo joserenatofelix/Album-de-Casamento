@@ -16,17 +16,22 @@ _visitor_lock = threading.Lock()
 
 def get_visitor_count():
     """Lê o número de visitantes de um arquivo."""
-    with _visitor_lock:
-        try:
-            with open(app.config['VISITOR_COUNT_FILE'], 'r') as f:
-                return int(f.read())
-        except (IOError, ValueError):
-            return 0
+    try:
+        with open(app.config['VISITOR_COUNT_FILE'], 'r') as f:
+            return int(f.read())
+    except (IOError, ValueError):
+        return 0
 
 def increment_visitor_count():
     """Incrementa e salva o número de visitantes."""
     with _visitor_lock:
-        count = get_visitor_count() + 1
+        count = 0
+        try:
+            with open(app.config['VISITOR_COUNT_FILE'], 'r') as f:
+                count = int(f.read())
+        except (IOError, ValueError):
+            pass # Se o arquivo não existir ou estiver vazio, count continua 0
+        count += 1
         with open(app.config['VISITOR_COUNT_FILE'], 'w') as f:
             f.write(str(count))
         return count
