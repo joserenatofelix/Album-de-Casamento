@@ -12,30 +12,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="album-wrapper text-center fade-in">
-
-  <div class="photo-frame mx-auto" id="photo-frame">
-    <img id="main-photo"
-         src="{% if photos %}{{ url_for('static', filename='photos/' + photos[0]) }}{% else %}{{ url_for('static', filename='images/placeholder.jpg') }}{% endif %}"
-         alt="Foto de Renato e Cleonice" />
-  </div>
-
-  <div class="controls mt-4">
-    <button id="prev" class="btn btn-secondary">
-      <i class="fas fa-chevron-left"></i> Anterior
-    </button>
-    <button id="next" class="btn btn-secondary">
-      Próxima <i class="fas fa-chevron-right"></i>
-    </button>
-    <button id="play" class="btn btn-primary">
-      <i class="fas fa-play"></i> Slideshow
-    </button>
-  </div>
-
+<div class="album-wrapper fade-in">
   {% if photos %}
-  <div id="thumbs" class="d-flex justify-content-center flex-wrap mt-4">
+  <!-- A galeria PhotoSwipe -->
+  <div class="pswp-gallery pswp-gallery--single-column" id="photo-gallery">
     {% for p in photos %}
-      <img class="thumb" src="{{ url_for('static', filename='photos/thumbs/' + p) }}" data-file="{{ p }}" alt="Miniatura" />
+      <a href="{{ url_for('static', filename='photos/' + p.src) }}" 
+         data-pswp-width="{{ p.w }}" 
+         data-pswp-height="{{ p.h }}" 
+         target="_blank">
+        <img src="{{ url_for('static', filename='photos/thumbs/' + p.thumb) }}" alt="Miniatura da foto do casamento" />
+      </a>
     {% endfor %}
   </div>
   {% else %}

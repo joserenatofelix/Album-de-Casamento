@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, render_template
 from datetime import datetime
 import threading
@@ -9,6 +10,7 @@ app = Flask(__name__)
 # Configurações
 app.config['PHOTO_DIR'] = 'static/photos'
 app.config['THUMB_DIR'] = 'static/photos/thumbs'
+app.config['PHOTO_DATA_FILE'] = 'static/photos/photos.json'
 app.config['VISITOR_COUNT_FILE'] = 'visitor_count.txt'
 
 # --- Contador de Visitantes Persistente e Thread-Safe ---
@@ -37,14 +39,13 @@ def increment_visitor_count():
         return count
 
 def get_photos():
-    """Retorna lista de fotos processadas"""
-    photo_dir = app.config['PHOTO_DIR']
-    if not os.path.exists(photo_dir):
+    """Lê os dados das fotos do arquivo JSON."""
+    json_path = app.config['PHOTO_DATA_FILE']
+    try:
+        with open(json_path, 'r') as f:
+            return json.load(f)
+    except (IOError, json.JSONDecodeError):
         return []
-    
-    photos = [f for f in os.listdir(photo_dir)
-              if f.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')) and os.path.isfile(os.path.join(photo_dir, f))]
-    return sorted(photos)
 
 @app.context_processor
 def inject_now():
